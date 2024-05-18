@@ -82,3 +82,4 @@ func GetTimerString(c *Timer) string {
 		clockFormat(seconds),
 	)
 }
+
