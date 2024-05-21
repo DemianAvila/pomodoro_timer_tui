@@ -8,6 +8,7 @@ import (
 type Model struct {
 	Timer TimerPort.Timer
 	Pomodoro PomodoroPort.Pomodoro
+	ClockString string
 }
 
 
@@ -17,7 +18,7 @@ func InitialModel() Model {
 	var stages = map[string] PomodoroPort.PomodoroStage{}
 	stages["workCycle"] = PomodoroPort.PomodoroStage {
 		Name: "Work Cycle",
-		DurationMilli: 1500000,
+		DurationMilli: 5000,
 		CyclesDone: 0,
 	}
 	stages["shortRestCycle"] = PomodoroPort.PomodoroStage {
@@ -34,7 +35,7 @@ func InitialModel() Model {
 	return Model{
 		Timer: TimerPort.Timer{
 			Milliseconds: 0,
-			Paused:       true,
+			Paused:       false,
 		},
 		Pomodoro: PomodoroPort.Pomodoro{
 			Stages: stages,

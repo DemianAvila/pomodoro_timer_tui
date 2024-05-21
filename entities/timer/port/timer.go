@@ -28,7 +28,9 @@ func Pause(c *Timer) {
 
 func Play(c *Timer) {
 	c.Paused = false
-	go CountingController(c)
+	if c.Milliseconds == 0 {
+		go CountingController(c)
+	}
 
 }
 
@@ -40,11 +42,17 @@ func AddMillisecond(c *Timer) {
 	c.Milliseconds += 1
 }
 
-func CountingController(c *Timer) {
-	for !IsPaused(c) {
+func CountingController(c *Timer) int{
+	for true {
 		time.Sleep(1 * time.Millisecond)
 		AddMillisecond(c)
+		fmt.Println(c.Milliseconds)
+		if IsPaused(c) {
+			fmt.Println("Pause timer")
+			return 0
+		}
 	}
+	return 0
 }
 
 func TimerFormat(c *Timer) TimerPresentation {
