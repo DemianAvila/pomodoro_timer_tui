@@ -35,7 +35,7 @@ func InitialModel() Model {
 	return Model{
 		Timer: TimerPort.Timer{
 			Milliseconds: 0,
-			Paused:       false,
+			Paused:       true,
 		},
 		Pomodoro: PomodoroPort.Pomodoro{
 			Stages: stages,

@@ -1,4 +1,6 @@
-package TimerPort
+package EventListeners
+
+type TimerRoutineListener
 
 import (
 	"fmt"
@@ -84,4 +86,5 @@ func GetTimerString(c *Timer) string {
 		clockFormat(seconds),
 	)
 }
+
 

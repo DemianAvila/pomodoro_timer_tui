@@ -18,6 +18,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "enter", " ":
 			ClockInterfaceHandeler(&m)
+			fmt.Println(m.Timer.Milliseconds)
 		}
 			return m, nil
 	}

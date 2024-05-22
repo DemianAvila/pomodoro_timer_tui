@@ -16,16 +16,18 @@ type Pomodoro struct {
 	CurrentStage PomodoroStage
 }
 
-func PomodoroNextCycle (p *Pomodoro){
+func PomodoroNextCycle (p *Pomodoro) int{
 	//IF CURRENT CYCLE IS A WORK ONE
 	if p.CurrentStage.Name =="Work Cycle"{
 		//IF THE CURRENT CYCLE EQUALS THE EXPECTED FOR LONG REST, PASS TO LONG REST
 		if p.CurrentStage.CyclesDone == (p.WorkCyclesUntilLongRest-1){
 			p.CurrentStage = p.Stages["longRestCycle"]
 			AddCycleCounter (p.Stages["longRestCycle"])
+			return 0
 		} else {
 			p.CurrentStage = p.Stages["shortRestCycle"]
 			AddCycleCounter (p.Stages["shortRestCycle"])
+			return 0
 		}
 	}
 	//IF CURRENT CYCLE IS A REST ONE; AUTOMATICALLY JUMP TO A WORK ONE
@@ -35,7 +37,9 @@ func PomodoroNextCycle (p *Pomodoro){
 			ResetCycles (p)
 		}
 		AddCycleCounter (p.Stages["workCycle"])
+		return 0
 	}
+	return 0
 }
 
 func ResetCycles (p *Pomodoro){
