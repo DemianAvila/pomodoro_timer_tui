@@ -29,12 +29,6 @@ func (to *TickObserver) ResetPendingUp() {
 	to.PendingUpdate = false
 }
 
-type Tick struct {
-	tick bool
-}
-
 func (to *TickObserver) Update() tea.Msg {
-	return Tick{
-		tick: true,
-	}
+	println("tick tack")
 }
