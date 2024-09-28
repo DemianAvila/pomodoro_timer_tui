@@ -1,9 +1,5 @@
 package pomodoro
 
-import (
-	tea "github.com/charmbracelet/bubbletea"
-)
-
 type Observer interface {
 	Update()
 }
@@ -33,6 +29,8 @@ func (to *TickObserver) ResetPendingUp() {
 	to.PendingUpdate = false
 }
 
-func (to *TickObserver) Update() tea.Msg {
-	return Tick{Tick: true}
+func (to *TickObserver) Update() {
+	go func() {
+		GlobalTickChanel <- Tick{Tick: true}
+	}()
 }

@@ -10,10 +10,6 @@ type Model struct {
 	CurrentCycle Cycle
 }
 
-type TickMessage struct {
-	Tick bool
-}
-
 func (m *Model) IsWorkCycle() bool {
 	return m.CurrentCycle.Name == "WorkCycle"
 }
@@ -58,10 +54,14 @@ func (m *Model) NextCycle() {
 	}
 }
 
-func (m Model) Init() tea.Cmd {
-	var observer TickObserver = m.Clock.TickEmmiter.GetObserver("updateTick")
-	return observer.Update
+func (m *Model) GetTick() tea.Msg {
+	getTick := <-GlobalTickChanel
+	return getTick
 
+}
+
+func (m Model) Init() tea.Cmd {
+	return m.GetTick
 }
 
 func ModelInitialization() *Model {
