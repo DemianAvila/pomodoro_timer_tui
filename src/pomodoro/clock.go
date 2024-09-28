@@ -1,7 +1,6 @@
 package pomodoro
 
 import (
-	"pomodoro_timer_tui/src/observer"
 	"time"
 )
 
@@ -10,7 +9,7 @@ type Clock struct {
 	CurrentSecond uint64
 	IsRuning      bool
 	HasEnded      bool
-	TickEmmiter   observer.TickEmmiter
+	TickEmmiter   TickEmmiter
 }
 
 func (clk *Clock) Play() {

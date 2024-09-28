@@ -1,4 +1,4 @@
-package observer
+package pomodoro
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
@@ -11,6 +11,10 @@ type Observer interface {
 type TickObserver struct {
 	ID            string
 	PendingUpdate bool
+}
+
+type Tick struct {
+	Tick bool
 }
 
 func (to *TickObserver) GetObserverID() string {
@@ -30,5 +34,5 @@ func (to *TickObserver) ResetPendingUp() {
 }
 
 func (to *TickObserver) Update() tea.Msg {
-	println("tick tack")
+	return Tick{Tick: true}
 }
