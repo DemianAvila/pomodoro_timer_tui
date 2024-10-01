@@ -17,16 +17,16 @@ func (clk *Clock) Play() {
 		clk.IsRuning = true
 		var second uint64
 	out:
-		for second = clk.CurrentSecond; second < clk.SecondLasting; second++ {
+		for second = clk.CurrentSecond; second <= clk.SecondLasting; second++ {
 			clk.CurrentSecond = second
-			time.Sleep(time.Second)
+			time.Sleep(time.Second / 10000)
 			clk.TickEmmiter.Notify()
 			if !clk.IsRuning {
 				break out
 			}
 		}
 	}
-	if clk.CurrentSecond == clk.SecondLasting-1 {
+	if clk.CurrentSecond == clk.SecondLasting {
 		clk.HasEnded = true
 		clk.IsRuning = false
 	}

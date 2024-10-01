@@ -71,7 +71,7 @@ var ASCIINumbers map[string]string = map[string]string{
  /_/    
 `,
 	"8": `
-  ___ 
+  ___  
  / _ \ 
 | (_) |
  > _ < 
@@ -174,15 +174,14 @@ func SecToTimeFormat(sec uint64) string {
 	hours = minutes / 60
 	if hours >= 1 {
 		minutes = minutes % 60
+		timeString = FormatTimeAmmounts(hours) + ":" +
+			FormatTimeAmmounts(minutes) +
+			":" + FormatTimeAmmounts(sec)
 	} else {
 		timeString = FormatTimeAmmounts(minutes) +
 			":" + FormatTimeAmmounts(sec)
 		return timeString
 	}
-
-	timeString = FormatTimeAmmounts(hours) + ":" +
-		FormatTimeAmmounts(minutes) +
-		":" + FormatTimeAmmounts(sec)
 
 	return timeString
 }

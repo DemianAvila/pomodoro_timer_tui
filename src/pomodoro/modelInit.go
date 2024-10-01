@@ -1,13 +1,15 @@
 package pomodoro
 
 import (
+	"github.com/charmbracelet/bubbles/progress"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type Model struct {
 	Clock        Clock
 	Cycles       []Cycle
-	CurrentCycle Cycle
+	CurrentCycle *Cycle
+	Progress     progress.Model
 }
 
 func (m *Model) IsWorkCycle() bool {
@@ -22,36 +24,47 @@ func (m *Model) IsLongRest() bool {
 	return m.CurrentCycle.Name == "LongRestCycle"
 }
 
-func (m *Model) ChangeCycle(c Cycle) {
+func (m *Model) ChangeCycle(c *Cycle) {
 	m.CurrentCycle = c
 }
 
-func (m *Model) GetWorkCycle() Cycle {
-	return m.Cycles[0]
+func (m *Model) GetWorkCycle() *Cycle {
+	return &m.Cycles[0]
 }
 
-func (m *Model) GetShortRestCycle() Cycle {
-	return m.Cycles[1]
+func (m *Model) GetShortRestCycle() *Cycle {
+	return &m.Cycles[1]
 }
 
-func (m *Model) GetLongRestCycle() Cycle {
-	return m.Cycles[2]
+func (m *Model) GetLongRestCycle() *Cycle {
+	return &m.Cycles[2]
 }
 
 func (m *Model) IsLastWorkCycle() bool {
-	return m.GetWorkCycle().Counter == 4
+	return m.GetWorkCycle().Counter == 3
 }
 
 func (m *Model) NextCycle() {
 	if m.IsLongRest() || m.IsShortRest() {
 		m.ChangeCycle(m.GetWorkCycle())
+		m.CurrentCycle.Counter += 1
 	} else {
 		if m.IsLastWorkCycle() {
 			m.ChangeCycle(m.GetLongRestCycle())
+			m.GetWorkCycle().Counter = -1
 		} else {
 			m.ChangeCycle(m.GetShortRestCycle())
 		}
 	}
+	var newClock Clock = Clock{
+		SecondLasting: m.CurrentCycle.LastingInSeconds,
+		CurrentSecond: 0,
+		IsRuning:      false,
+		HasEnded:      false,
+	}
+
+	newClock.TickEmmiter.RegistObs("updateTick")
+	m.Clock = newClock
 }
 
 func (m *Model) GetTick() tea.Msg {
@@ -78,6 +91,7 @@ func ModelInitialization() *Model {
 	return &Model{
 		Clock:        initialClock,
 		Cycles:       AvailableCycles,
-		CurrentCycle: AvailableCycles[0],
+		CurrentCycle: &AvailableCycles[0],
+		Progress:     progress.New(),
 	}
 }
