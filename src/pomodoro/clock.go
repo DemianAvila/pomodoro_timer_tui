@@ -19,7 +19,7 @@ func (clk *Clock) Play() {
 	out:
 		for second = clk.CurrentSecond; second <= clk.SecondLasting; second++ {
 			clk.CurrentSecond = second
-			time.Sleep(time.Second / 10000)
+			time.Sleep(time.Second)
 			clk.TickEmmiter.Notify()
 			if !clk.IsRuning {
 				break out

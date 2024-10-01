@@ -5,11 +5,17 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
+type Screen struct {
+	W int
+	H int
+}
+
 type Model struct {
 	Clock        Clock
 	Cycles       []Cycle
 	CurrentCycle *Cycle
 	Progress     progress.Model
+	ScreenSize   Screen
 }
 
 func (m *Model) IsWorkCycle() bool {
@@ -48,12 +54,15 @@ func (m *Model) NextCycle() {
 	if m.IsLongRest() || m.IsShortRest() {
 		m.ChangeCycle(m.GetWorkCycle())
 		m.CurrentCycle.Counter += 1
+		m.Progress = WorkProgressBar
 	} else {
 		if m.IsLastWorkCycle() {
 			m.ChangeCycle(m.GetLongRestCycle())
 			m.GetWorkCycle().Counter = -1
+			m.Progress = LRProgressBar
 		} else {
 			m.ChangeCycle(m.GetShortRestCycle())
+			m.Progress = SRProgressBar
 		}
 	}
 	var newClock Clock = Clock{
@@ -92,6 +101,6 @@ func ModelInitialization() *Model {
 		Clock:        initialClock,
 		Cycles:       AvailableCycles,
 		CurrentCycle: &AvailableCycles[0],
-		Progress:     progress.New(),
+		Progress:     WorkProgressBar,
 	}
 }
